@@ -1,5 +1,6 @@
 package org.example.expert.domain.user.controller;
 
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.example.expert.domain.common.annotation.Auth;
 import org.example.expert.domain.common.dto.AuthUser;
@@ -23,5 +24,11 @@ public class UserController {
     @PutMapping("/users")
     public void changePassword(@Auth AuthUser authUser, @RequestBody UserChangePasswordRequest userChangePasswordRequest) {
         userService.changePassword(authUser.getId(), userChangePasswordRequest);
+    }
+
+    // 과제(1-3) 유효성 검사 활성화
+    @PostMapping("/users/{userId}/change-password")
+    public void changePassword(@PathVariable long userId, @Valid @RequestBody UserChangePasswordRequest userChangePasswordRequest) {
+        userService.changePassword(userId, userChangePasswordRequest);
     }
 }
