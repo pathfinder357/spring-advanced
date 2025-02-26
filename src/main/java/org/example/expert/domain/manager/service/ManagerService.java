@@ -35,6 +35,10 @@ public class ManagerService {
         Todo todo = todoRepository.findById(todoId)
                 .orElseThrow(() -> new InvalidRequestException("Todo not found"));
 
+        // Test-Code LV 3.2.3 일정을 만든 유저가 null값인 경우에 대한 체크가 없어서 만듬
+        if (todo.getUser() == null) {
+            throw new InvalidRequestException("해당 일정 작성자가 없습니다.");
+        }
         if (!ObjectUtils.nullSafeEquals(user.getId(), todo.getUser().getId())) {
             throw new InvalidRequestException("담당자를 등록하려고 하는 유저가 일정을 만든 유저가 유효하지 않습니다.");
         }
@@ -55,6 +59,7 @@ public class ManagerService {
         );
     }
 
+    // 2-1 케이스
     @Transactional(readOnly = true)
     public List<ManagerResponse> getManagers(long todoId) {
         Todo todo = todoRepository.findById(todoId)

@@ -18,8 +18,6 @@ class PasswordEncoderTest {
     private PasswordEncoder passwordEncoder;
 
     @Test
-    // 로그출력이 보고 싶었다...
-    @DisplayName("matches 메서드 테스트 - rawPassword: testPassword")
     void matches_메서드가_정상적으로_동작한다() {
         // given
         String rawPassword = "testPassword";
@@ -31,7 +29,7 @@ class PasswordEncoderTest {
         boolean matches = passwordEncoder.matches(rawPassword, encodedPassword);
 
         // then
-        assertTrue(matches);
+        assertTrue(matches, "비밀번호가 일치하지 않습니다. rawPassword: " + rawPassword);
 
         // verify()
         verify(passwordEncoder).matches(rawPassword, encodedPassword);

@@ -38,24 +38,27 @@ class ManagerServiceTest {
     @InjectMocks
     private ManagerService managerService;
 
+    // LV 3.2.1
     @Test
     public void manager_목록_조회_시_Todo가_없다면_NPE_에러를_던진다() {
         // given
         long todoId = 1L;
-        given(todoRepository.findById(todoId)).willReturn(Optional.empty());
+        given(todoRepository.findById(todoId)).willReturn(Optional.empty()); //Optional.empty()를 반환하는 경우 InvalidRequestException을 던지는지 검증해야함.
 
         // when & then
         InvalidRequestException exception = assertThrows(InvalidRequestException.class, () -> managerService.getManagers(todoId));
-        assertEquals("Manager not found", exception.getMessage());
+        assertEquals("Todo not found", exception.getMessage()); // getManagers의 내부 비지니스 로직과 동일한 오류 메시지 작성
     }
 
+    // LV 3.2.3
     @Test
     void todo의_user가_null인_경우_예외가_발생한다() {
         // given
+        //당담자 임시 생성
         AuthUser authUser = new AuthUser(1L, "a@a.com", UserRole.USER);
         long todoId = 1L;
         long managerUserId = 2L;
-
+        // 일정 작성자(유저) 임시 생성
         Todo todo = new Todo();
         ReflectionTestUtils.setField(todo, "user", null);
 
@@ -67,8 +70,9 @@ class ManagerServiceTest {
         InvalidRequestException exception = assertThrows(InvalidRequestException.class, () ->
             managerService.saveManager(authUser, todoId, managerSaveRequest)
         );
+        // 예외 메시지를 동일하게 작성해야함.
+        assertEquals("해당 일정 작성자가 없습니다.", exception.getMessage());
 
-        assertEquals("담당자를 등록하려고 하는 유저가 일정을 만든 유저가 유효하지 않습니다.", exception.getMessage());
     }
 
     @Test // 테스트코드 샘플
