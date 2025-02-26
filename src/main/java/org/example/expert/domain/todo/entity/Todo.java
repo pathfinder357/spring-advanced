@@ -14,6 +14,12 @@ import java.util.List;
 @Getter
 @Entity
 @NoArgsConstructor
+/*왜 위에서 선언해야 하는지 강의를 못들었나보다..
+클래스 전체에 적용되는 메타데이터이고, JPA 규칙이었다..*/
+@NamedEntityGraph(
+        name = "Todo.withUser", // EntityGraph 이름
+        attributeNodes = @NamedAttributeNode("user") // 함께 조회할 연관 엔티티
+)
 @Table(name = "todos")
 public class Todo extends Timestamped {
 
