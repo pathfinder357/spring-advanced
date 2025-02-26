@@ -27,13 +27,18 @@ public class WeatherClient {
                 restTemplate.getForEntity(buildWeatherApiUri(), WeatherDto[].class);
 
         WeatherDto[] weatherArray = responseEntity.getBody();
+      /*  if-else 피하기
+                기존 코드에서 else 제거하기 위해서 하나의 if 문을 쓰려고 했는데 생각해보니
+                (!HttpStatus.OK.equals(responseEntity.getStatusCode())가 반환하는 데이터는 상태코드(200)이고
+                 weatherArray는 null이거나 길이가 0일때 둘중하나면 에러 날리는거라서 코드를 그냥 분리 시켯다
+                */
         if (!HttpStatus.OK.equals(responseEntity.getStatusCode())) {
             throw new ServerException("날씨 데이터를 가져오는데 실패했습니다. 상태 코드: " + responseEntity.getStatusCode());
-        } else {
-            if (weatherArray == null || weatherArray.length == 0) {
-                throw new ServerException("날씨 데이터가 없습니다.");
-            }
         }
+        if (weatherArray == null || weatherArray.length == 0) {
+                throw new ServerException("날씨 데이터가 없습니다.");
+        }
+
 
         String today = getCurrentDate();
 
