@@ -12,6 +12,8 @@ public class CommentAdminController {
 
     private final CommentAdminService commentAdminService;
 
+    // Lv 4
+    // only permission to Admin User
     @DeleteMapping("/admin/comments/{commentId}")
     public void deleteComment(@PathVariable long commentId) {
         commentAdminService.deleteComment(commentId);

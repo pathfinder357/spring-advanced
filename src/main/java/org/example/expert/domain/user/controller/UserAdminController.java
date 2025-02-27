@@ -14,6 +14,9 @@ public class UserAdminController {
 
     private final UserAdminService userAdminService;
 
+    // Lv 4
+    // only permission to Admin User
+    // 오직 어드민 사용자만 url(특정 API)에 접근 가능해야함.
     @PatchMapping("/admin/users/{userId}")
     public void changeUserRole(@PathVariable long userId, @RequestBody UserRoleChangeRequest userRoleChangeRequest) {
         userAdminService.changeUserRole(userId, userRoleChangeRequest);
